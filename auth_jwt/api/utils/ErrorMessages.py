@@ -1,8 +1,9 @@
 class ErrorMessages:
     messages = {
         'USER_EXISTS': 'Usuário já cadastrado',
-        'NOT_FOUND': 'Usuário não localizado',
+        'NOT_FOUND': 'Recurso não localizado',
         'INVALID_DATE': 'Dado Inválido',
+        'PAGED_NOT_RESULT': 'A Consulta não trouxe resultados!'
     }
 
     @classmethod

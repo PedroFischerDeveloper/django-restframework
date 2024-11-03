@@ -9,31 +9,20 @@ class TransactionService:
     @staticmethod
     def create(data):
         serializer = TransactionSerializer(data=data)
-        try:
-            serializer.is_valid(raise_exception=True)  
+        if serializer.is_valid():
             return serializer.save()  
-        except ValidationError as e:
-            return {"errors": e.detail} 
+        return None  
        
     @staticmethod
-    def ListPaged(page=1, page_size=10):
-        get_transactions = Transaction.objects.all()
-        paginator_instance = Paginator(get_transactions, page_size)
+    def list_paged(page=1, page_size=10):
+        get_accounts = Transaction.objects.all()
+        paginator_instance = Paginator(get_accounts, page_size)
 
-        try:
-            get_transactions_paged = paginator_instance.page(page)  
-        except EmptyPage:
-            get_transactions_paged = []
-
-        serializer = TransactionSerializer(get_transactions_paged, many=True)
-        
-        return {
-            'transactions': serializer.data,
-            'total': get_transactions_paged.count, 
-            'page': page,
-            'page_size': page_size,
-            'total_pages': get_transactions_paged.num_pages, 
-        }
+        if paginator_instance.count == 0:
+           return 0
+        else: 
+            get_accounts_paged = paginator_instance.page(page) 
+            return get_accounts_paged
 
     @staticmethod
     def get(id):

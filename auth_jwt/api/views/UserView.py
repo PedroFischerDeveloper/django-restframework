@@ -17,7 +17,7 @@ class UserView(APIView):
         getUsuario = UserService.criar_usuario(data=request.data)
         if getUsuario:
             return Response(UserSerializer(getUsuario).data, status=status.HTTP_201_CREATED)
-        return Response({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(ErrorMessages.get_error("INVALID_DATE"), status=status.HTTP_400_BAD_REQUEST)
     
     def get(self, request, id=None):
         if id:
