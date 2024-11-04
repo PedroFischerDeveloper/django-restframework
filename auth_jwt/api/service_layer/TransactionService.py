@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.exceptions import ValidationError
-from api.models.Transaction import Transaction
+from api.domain.Transaction import Transaction
 from api.serializers.TransactionSerializer import TransactionSerializer
 
 

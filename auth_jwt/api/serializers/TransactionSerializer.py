@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models.Transaction import Transaction
+from api.domain.Transaction import Transaction
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:

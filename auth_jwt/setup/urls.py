@@ -2,10 +2,10 @@
 from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from api.views.UserView import UserView
-from api.views.BankAccountView import BankAccountView
-from api.views.TransactionView import TransactionView
-from api.views.home import HomeView
+from api.entrypoint.UserView import UserView
+from api.entrypoint.BankAccountView import BankAccountView
+from api.entrypoint.TransactionView import TransactionView
+from api.entrypoint.home import HomeView
 
 
 

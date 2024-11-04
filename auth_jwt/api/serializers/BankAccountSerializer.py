@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models.BankAccount import BankAccount
+from api.domain.BankAccount import BankAccount
 
 class BankAccountSerializer(serializers.ModelSerializer):
     class Meta:

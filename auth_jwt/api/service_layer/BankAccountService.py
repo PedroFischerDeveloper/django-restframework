@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage
 from rest_framework.exceptions import ValidationError
-from api.models.BankAccount import BankAccount
+from api.domain.BankAccount import BankAccount
 from api.serializers.BankAccountSerializer import BankAccountSerializer
 
 
