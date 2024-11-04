@@ -8,6 +8,7 @@ from api.serializers.UserSerializer import UserSerializer
 from api.service_layer.UserService import UserService
 
 
+# Viewset base, fornece as operações básicas de leitura, cadastro, consulta, atualizações e deleções
 class UserViewSet(viewsets.ModelViewSet):  
     serializer_class = UserSerializer
     queryset = UserService.get_all_users()

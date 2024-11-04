@@ -6,6 +6,7 @@ from api.domain.BankAccount import BankAccount
 from api.serializers.BankAccountSerializer import BankAccountSerializer
 
 
+from api.service_layer import BankAccountService
 from api.utils.ErrorMessages import ErrorMessages
 
 class BankAccountView(APIView):  
@@ -16,6 +17,8 @@ class BankAccountView(APIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['username']
 
+    def list(self, request, pk=None, *args, **kwargs):
+        queryset = BankAccountService.get_all_bank_account()
             
              
 

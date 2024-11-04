@@ -1,34 +1,50 @@
-from django.core.paginator import Paginator, EmptyPage
-from rest_framework.exceptions import ValidationError
+# Importando bibliotecas de terceiros
+from django.core.exceptions import ObjectDoesNotExist
+
+# Importando módulos locais
 from api.domain.BankAccount import BankAccount
-from api.serializers.BankAccountSerializer import BankAccountSerializer
 
 
 class BankAccountService:
-    
     @staticmethod
-    def create(data):
-        serializer = BankAccountSerializer(data=data)
-        if serializer.is_valid():
-            return serializer.save()  
-        return None  
-       
-    @staticmethod
-    def list_paged(page=1, page_size=10):
-        get_accounts = BankAccount.objects.all()
-        paginator_instance = Paginator(get_accounts, page_size)
-
-        if paginator_instance.count == 0:
-           return 0
-        else: 
-            get_accounts_paged = paginator_instance.page(page) 
-            return get_accounts_paged
+    def get_all_bank_account():
+        return BankAccount.objects.all()
+        
 
     @staticmethod
-    def get(id):
-        getUsuario = BankAccount.objects.filter(id=id).first()
-        if getUsuario:
-            serializer = BankAccountSerializer(getUsuario) 
-            return serializer.data
-        return None
+    def get_user_by_id(user_id):
+        try:
+            return BankAccount.objects.get(id=user_id)
+        except ObjectDoesNotExist:
+            return None
+        
+    @staticmethod
+    def create_user(data):
+        user = BankAccount(**data)
+        user.save()
+        return user
+
+    @staticmethod
+    def update_user(user_id, data):
+        try:
+            bankAccount = BankAccountService.get_user_by_id(user_id)
+            if bankAccount is not None:
+                for attr, value in data.items():
+                    setattr(bankAccount, attr, value)
+                bankAccount.save()
+                return bankAccount
+            return None
+        except ObjectDoesNotExist:
+            return None
+
+    @staticmethod
+    def delete_user(user_id):
+        try:
+            bankAccount = BankAccountService.get_user_by_id(user_id)
+            if bankAccount is not None:
+                bankAccount.delete()
+                return True
+            return False
+        except ObjectDoesNotExist:
+            return False
     

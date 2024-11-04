@@ -1,34 +1,49 @@
-from django.core.paginator import Paginator, EmptyPage
-from rest_framework.exceptions import ValidationError
-from api.domain.Transaction import Transaction
-from api.serializers.TransactionSerializer import TransactionSerializer
+# Importando bibliotecas de terceiros
+from django.core.exceptions import ObjectDoesNotExist
 
+# Importando módulos locais
+from api.domain.Transaction import Transaction
 
 class TransactionService:
-    
     @staticmethod
-    def create(data):
-        serializer = TransactionSerializer(data=data)
-        if serializer.is_valid():
-            return serializer.save()  
-        return None  
-       
-    @staticmethod
-    def list_paged(page=1, page_size=10):
-        get_accounts = Transaction.objects.all()
-        paginator_instance = Paginator(get_accounts, page_size)
-
-        if paginator_instance.count == 0:
-           return 0
-        else: 
-            get_accounts_paged = paginator_instance.page(page) 
-            return get_accounts_paged
+    def get_all_transaction():
+        return Transaction.objects.all()
+        
 
     @staticmethod
-    def get(id):
-        getUsuario = Transaction.objects.filter(id=id).first()
-        if getUsuario:
-            serializer = TransactionSerializer(getUsuario) 
-            return serializer.data
-        return None
+    def get_transaction_by_id(user_id):
+        try:
+            return Transaction.objects.get(id=user_id)
+        except ObjectDoesNotExist:
+            return None
+        
+    @staticmethod
+    def create_transaction(data):
+        transaction = Transaction(**data)
+        transaction.save()
+        return transaction
+
+    @staticmethod
+    def update_transaction(transaction_id, data):
+        try:
+            transaction = TransactionService.get_transaction_by_id(transaction_id)
+            if transaction is not None:
+                for attr, value in data.items():
+                    setattr(transaction, attr, value)
+                transaction.save()
+                return transaction
+            return None
+        except ObjectDoesNotExist:
+            return None
+
+    @staticmethod
+    def delete_transaction(transaction_id):
+        try:
+            transaction = TransactionService.get_transaction_by_id(transaction_id)
+            if transaction is not None:
+                transaction.delete()
+                return True
+            return False
+        except ObjectDoesNotExist:
+            return False
     
